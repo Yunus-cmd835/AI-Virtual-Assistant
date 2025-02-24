@@ -1,0 +1,31 @@
+version: "3.1"
+recipe: "default.v1"  
+language: "en"
+pipeline:
+  - name: "WhitespaceTokenizer"
+  - name: "RegexFeaturizer"
+    epochs: 100
+  - name: "DIETClassifier"
+    constrain_similarities: True  
+  - name: "EntitySynonymMapper"
+    epochs: 100
+  - name: "ResponseSelector"
+    threshold: 0.3
+    constrain_similarities: True  
+
+policies:
+- name: "MemoizationPolicy"
+- name: "TEDPolicy"
+  max_history: 5
+  threshold: 0.4
+- name: "FallbackPolicy"
+  thershold: 0.7
+  fallback_action_name: "action_default_fallback"  
+
+
+assistant_id: 20250130-090936-complicated-crop
+
+# Training parameters:
+# (set epochs to 20 or more)
+epochs: 20
+evaluate_every_number_of_epochs: 20  # You can adjust this value as well
